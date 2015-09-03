@@ -37,36 +37,32 @@ class PlaySoundsViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
-    @IBAction func playSlow(sender: AnyObject) {
+    func playAudioWithVariableRate() {
         audioPlayer.stop()
-        audioPlayer.rate = 0.5
         audioPlayer.currentTime = 0.0
         audioPlayer.play()
-        
+        audioEngine.stop()
+        audioEngine.reset()
+    }
+    
+    func resetAndStopAudioEngine() {
+        audioPlayer.stop()
+        audioEngine.stop()
+        audioEngine.reset()
+    }
+    
+    @IBAction func playSlow(sender: AnyObject) {
+        audioPlayer.rate = 0.5
+        playAudioWithVariableRate()
     }
     
     @IBAction func playFast(sender: AnyObject) {
-        audioPlayer.stop()
-        audioPlayer.rate = 2
-        audioPlayer.currentTime = 0.0
-        audioPlayer.play()
-        audioEngine.reset()
-        audioEngine.stop()
+        audioPlayer.rate = 2.0
+        playAudioWithVariableRate()
     }
     
     @IBAction func stopPlay(sender: AnyObject) {
-        audioPlayer.stop()
-        audioEngine.reset()
-        audioEngine.stop()
+        resetAndStopAudioEngine()
     }
 
     @IBAction func playChipmunkAudio(sender: UIButton) {
@@ -74,9 +70,7 @@ class PlaySoundsViewController: UIViewController {
     }
     
     func playAudioWithVariablePitch(pitch: Float) {
-        audioPlayer.stop()
-        audioEngine.stop()
-        audioEngine.reset()
+        resetAndStopAudioEngine()
         
         var audioPlayerNode = AVAudioPlayerNode()
         audioEngine.attachNode(audioPlayerNode)
